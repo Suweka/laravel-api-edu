@@ -11,11 +11,14 @@ class CreateCoursesTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    public function up(){
         Schema::create('courses', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // Primary Key
+            $table->string('title'); // Course title
+            $table->text('description'); // Course description
+            $table->integer('duration')->nullable(); // Optional duration in hours
+            $table->string('level')->default('Beginner'); // Course level (e.g., Beginner, Intermediate, Advanced)
+            $table->timestamps(); // Created at and Updated at timestamps
         });
     }
 
