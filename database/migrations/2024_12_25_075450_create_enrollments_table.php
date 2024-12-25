@@ -14,8 +14,11 @@ class CreateEnrollmentsTable extends Migration
     public function up()
     {
         Schema::create('enrollments', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // Primary Key
+            $table->foreignId('student_id')->constrained()->onDelete('cascade'); // Foreign key to students table
+            $table->foreignId('course_id')->constrained()->onDelete('cascade'); // Foreign key to courses table
+            $table->date('enrollment_date')->nullable(); // Date of enrollment
+            $table->timestamps(); // Created at and Updated at timestamps
         });
     }
 
