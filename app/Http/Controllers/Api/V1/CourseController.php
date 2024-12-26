@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Enrollment;
-use App\Http\Requests\StoreEnrollmentRequest;
-use App\Http\Requests\UpdateEnrollmentRequest;
+use App\Models\Course;
+use App\Http\Requests\StoreCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
+use App\Http\Controllers\Controller;
 
-class EnrollmentController extends Controller
+class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +32,10 @@ class EnrollmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreEnrollmentRequest  $request
+     * @param  \App\Http\Requests\StoreCourseRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreEnrollmentRequest $request)
+    public function store(StoreCourseRequest $request)
     {
         //
     }
@@ -42,10 +43,10 @@ class EnrollmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Enrollment  $enrollment
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Enrollment $enrollment)
+    public function show(Course $course)
     {
         //
     }
@@ -53,10 +54,10 @@ class EnrollmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Enrollment  $enrollment
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function edit(Enrollment $enrollment)
+    public function edit(Course $course)
     {
         //
     }
@@ -64,11 +65,11 @@ class EnrollmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateEnrollmentRequest  $request
-     * @param  \App\Models\Enrollment  $enrollment
+     * @param  \App\Http\Requests\UpdateCourseRequest  $request
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEnrollmentRequest $request, Enrollment $enrollment)
+    public function update(UpdateCourseRequest $request, Course $course)
     {
         //
     }
@@ -76,10 +77,10 @@ class EnrollmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Enrollment  $enrollment
+     * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Enrollment $enrollment)
+    public function destroy(Course $course)
     {
         //
     }
