@@ -7,6 +7,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\StudentResource;
+use App\Http\Resources\V1\StudentCollection;
 
 class StudentController extends Controller
 {
@@ -17,7 +18,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return Student::all(); // Fetch all students
+        return new StudentCollection(Student::all()); // Fetch all students
     }
 
     /**
