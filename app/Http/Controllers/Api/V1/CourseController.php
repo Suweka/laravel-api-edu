@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\CourseResource;
 
 class CourseController extends Controller
 {
@@ -48,7 +49,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        return new CourseResource($course); // Transform the single course record into JSON
     }
 
     /**
@@ -59,7 +60,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        //S
     }
 
     /**
