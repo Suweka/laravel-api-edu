@@ -16,7 +16,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        return Student::all(); // Fetch all students
     }
 
     /**

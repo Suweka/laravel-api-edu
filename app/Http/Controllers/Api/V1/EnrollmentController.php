@@ -16,7 +16,7 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        //
+        return Enrollment::all(); // Fetch all enrollments
     }
 
     /**
