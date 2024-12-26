@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\StudentResource;
 
 class StudentController extends Controller
 {
@@ -48,7 +49,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        return new StudentResource($student); // Transform the single student record into JSON
     }
 
     /**
