@@ -18,7 +18,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return new StudentCollection(Student::all()); // Fetch all students
+        return new StudentCollection(Student::paginate()); // Paginate the student records
     }
 
     /**
