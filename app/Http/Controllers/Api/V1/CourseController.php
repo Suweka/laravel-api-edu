@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CourseResource;
+use App\Http\Resources\V1\CourseCollection;
 
 class CourseController extends Controller
 {
@@ -17,7 +18,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return Course::all(); // Fetch all courses
+        return new CourseCollection(Course::paginate()); // Paginate the course records
     }
 
     /**
