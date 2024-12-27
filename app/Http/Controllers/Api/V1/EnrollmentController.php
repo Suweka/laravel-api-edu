@@ -6,6 +6,7 @@ use App\Models\Enrollment;
 use App\Http\Requests\StoreEnrollmentRequest;
 use App\Http\Requests\UpdateEnrollmentRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\EnrollmentResource;
 
 class EnrollmentController extends Controller
 {
@@ -48,7 +49,7 @@ class EnrollmentController extends Controller
      */
     public function show(Enrollment $enrollment)
     {
-        //
+        return new EnrollmentResource($enrollment); 
     }
 
     /**
