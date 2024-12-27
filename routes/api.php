@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Public authentication routes
+Route::post('register', [AuthController::class, 'register']); // Route for user registration
+Route::post('login', [AuthController::class, 'login']);       // Route for user login
+
+// Route to fetch the authenticated user's data
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -28,5 +34,3 @@ Route::group([
     Route::apiResource('courses', CourseController::class);
     Route::apiResource('enrollments', EnrollmentController::class);
 });
-
-
