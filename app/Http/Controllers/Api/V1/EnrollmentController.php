@@ -7,6 +7,7 @@ use App\Http\Requests\StoreEnrollmentRequest;
 use App\Http\Requests\UpdateEnrollmentRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\EnrollmentResource;
+use App\Http\Resources\V1\EnrollmentCollection;
 
 class EnrollmentController extends Controller
 {
@@ -17,7 +18,7 @@ class EnrollmentController extends Controller
      */
     public function index()
     {
-        return Enrollment::all(); // Fetch all enrollments
+        return new EnrollmentCollection(Enrollment::paginate()); // Paginate the enrollment records
     }
 
     /**
