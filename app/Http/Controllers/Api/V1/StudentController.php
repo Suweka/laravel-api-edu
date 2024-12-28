@@ -37,10 +37,24 @@ class StudentController extends Controller
      * @param  \App\Http\Requests\StoreStudentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreStudentRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:students',
+            'age' => 'required|integer',
+            'city' => 'required|string|max:255',
+            'phone_number' => 'nullable|string|max:15',
+            'gender' => 'nullable|string|in:Male,Female,Other',
+        ]);
+        
+        $student = Student::create($request->all());
+        return response()->json([
+            'message' => 'Student created successfully',
+            'student' => $student,
+        ], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -71,10 +85,26 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateStudentRequest $request, Student $student)
+    public function update(Request $request, Student $student)
     {
-        //
+        $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|email|unique:students,email,' . $student->id,
+            'age' => 'sometimes|required|integer',
+            'city' => 'sometimes|required|string|max:255',
+            'phone_number' => 'nullable|string|max:15',
+            'gender' => 'nullable|string|in:Male,Female,Other',
+        ]);
+
+        $student->update($request->all());
+
+        return response()->json([
+            'message' => 'Student updated successfully',
+            'student' => $student,
+        ]);
     }
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -84,6 +114,8 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        $student->delete();
+        
+        return response()->json(['message' => 'Student deleted successfully']);
     }
 }
