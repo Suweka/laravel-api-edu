@@ -24,13 +24,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// api/v1
+// API v1 routes with Sanctum middleware protection
 Route::group([
     'prefix' => 'v1',
     'namespace' => 'App\Http\Controllers\Api\V1',
+    'middleware' => 'auth:sanctum', // Protect all routes in this group
 ], function () {
     // Define API resource routes
     Route::apiResource('students', StudentController::class);
     Route::apiResource('courses', CourseController::class);
     Route::apiResource('enrollments', EnrollmentController::class);
+
+    // Example custom route for bulk operation (optional)
+    Route::post('enrollments/bulk', [EnrollmentController::class, 'bulkStore']);
 });
