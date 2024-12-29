@@ -4,17 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 // Public authentication routes
 Route::post('register', [AuthController::class, 'register']); // Route for user registration
 Route::post('login', [AuthController::class, 'login']);       // Route for user login
@@ -24,17 +13,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// API v1 routes with Sanctum middleware protection
+// API v1 routes
 Route::group([
     'prefix' => 'v1',
-    'namespace' => 'App\Http\Controllers\Api\V1',
-    'middleware' => 'auth:sanctum', // Protect all routes in this group
 ], function () {
-    // Define API resource routes
-    Route::apiResource('students', StudentController::class);
-    Route::apiResource('courses', CourseController::class);
-    Route::apiResource('enrollments', EnrollmentController::class);
+    // Publicly accessible routes
+    Route::apiResource('students', \App\Http\Controllers\Api\V1\StudentController::class)->only(['index', 'show']);
+    Route::apiResource('courses', \App\Http\Controllers\Api\V1\CourseController::class)->only(['index', 'show']);
+    Route::apiResource('enrollments', \App\Http\Controllers\Api\V1\EnrollmentController::class)->only(['index', 'show']);
 
-    // Example custom route for bulk operation (optional)
-    Route::post('enrollments/bulk', [EnrollmentController::class, 'bulkStore']);
+    // Protected routes for admin only
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+        Route::post('/students', [\App\Http\Controllers\Api\V1\StudentController::class, 'store']);
+        Route::put('/students/{id}', [\App\Http\Controllers\Api\V1\StudentController::class, 'update']);
+        Route::delete('/students/{id}', [\App\Http\Controllers\Api\V1\StudentController::class, 'destroy']);
+
+        Route::post('/courses', [\App\Http\Controllers\Api\V1\CourseController::class, 'store']);
+        Route::put('/courses/{id}', [\App\Http\Controllers\Api\V1\CourseController::class, 'update']);
+        Route::delete('/courses/{id}', [\App\Http\Controllers\Api\V1\CourseController::class, 'destroy']);
+
+        Route::post('/enrollments/bulk', [\App\Http\Controllers\Api\V1\EnrollmentController::class, 'bulkStore']);
+    });
 });
