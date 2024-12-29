@@ -9,9 +9,17 @@ class Student extends Model
 {
     use HasFactory;
 
-    public function enrollments(){
-        return $this->hasMany(Enrollment::class);
-    }
-
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',          // Add all columns you want to allow
+        'email',
+        'age',
+        'city',
+        'phone_number',
+        'gender',
+    ];
 }
