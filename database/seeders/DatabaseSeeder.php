@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\Student;
 use App\Models\Course;
 use App\Models\Enrollment;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 
 class DatabaseSeeder extends Seeder
@@ -17,6 +19,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Seed an Admin User
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin', // Assuming you have a 'role' column in your users table
+        ]);
+
         // Generate students
         $students = Student::factory(50)->create();
         
