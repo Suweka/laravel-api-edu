@@ -38,9 +38,21 @@ class CourseController extends Controller
      * @param  \App\Http\Requests\StoreCourseRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCourseRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'duration' => 'required|integer',
+            'level' => 'required|string|in:Beginner,Intermediate,Advanced',
+        ]);
+    
+        $course = Course::create($request->all());
+    
+        return response()->json([
+            'message' => 'Course created successfully',
+            'course' => $course,
+        ], 201);
     }
 
     /**
@@ -72,10 +84,23 @@ class CourseController extends Controller
      * @param  \App\Models\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCourseRequest $request, Course $course)
+    public function update(Request $request, Course $course)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
+            'duration' => 'sometimes|required|integer',
+            'level' => 'sometimes|required|string|in:Beginner,Intermediate,Advanced',
+        ]);
+    
+        $course->update($validatedData);
+    
+        return response()->json([
+            'message' => 'Course updated successfully',
+            'course' => $course->fresh(),
+        ]);
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -85,6 +110,8 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $course->delete();
+    
+        return response()->json(['message' => 'Course deleted successfully']);
     }
 }
