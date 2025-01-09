@@ -15,20 +15,34 @@ return [
     |
     */
 
+    // Define the API paths and other endpoints where CORS applies
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+    // Define the allowed HTTP methods
+    'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 
-    'allowed_origins' => ['*'],
+    // Define the allowed origins (frontend URLs)
+    'allowed_origins' => ['http://localhost:3000', 'http://127.0.0.1:3000'],
 
+    // If you have dynamic patterns for origins, you can add them here
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    // Restrict to only the headers that are necessary for your API
+    'allowed_headers' => [
+        'Content-Type',
+        'X-Requested-With',
+        'Authorization',
+        'Accept',
+        'Origin',
+        'X-CSRF-Token',
+    ],
 
-    'exposed_headers' => [],
+    // Specify headers to expose to the browser
+    'exposed_headers' => ['Authorization'],
 
-    'max_age' => 0,
+    // Define the max age for caching preflight requests (in seconds)
+    'max_age' => 3600,
 
-    'supports_credentials' => false,
-
+    // Enable support for credentials (e.g., cookies, Authorization headers)
+    'supports_credentials' => true,
 ];
