@@ -38,9 +38,20 @@ class EnrollmentController extends Controller
      * @param  \App\Http\Requests\StoreEnrollmentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreEnrollmentRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'student_id' => 'required|exists:students,id',
+            'course_id' => 'required|exists:courses,id',
+            'enrollment_date' => 'required|date',
+        ]);
+    
+        $enrollment = Enrollment::create($request->all());
+    
+        return response()->json([
+            'message' => 'Enrollment created successfully',
+            'enrollment' => $enrollment,
+        ], 201);
     }
 
     /**
@@ -72,9 +83,20 @@ class EnrollmentController extends Controller
      * @param  \App\Models\Enrollment  $enrollment
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEnrollmentRequest $request, Enrollment $enrollment)
+    public function update(Request $request, Enrollment $enrollment)
     {
-        //
+        $validatedData = $request->validate([
+            'student_id' => 'sometimes|required|exists:students,id',
+            'course_id' => 'sometimes|required|exists:courses,id',
+            'enrollment_date' => 'sometimes|required|date',
+        ]);
+    
+        $enrollment->update($validatedData);
+    
+        return response()->json([
+            'message' => 'Enrollment updated successfully',
+            'enrollment' => $enrollment->fresh(),
+        ]);
     }
 
     /**
@@ -85,6 +107,8 @@ class EnrollmentController extends Controller
      */
     public function destroy(Enrollment $enrollment)
     {
-        //
+        $enrollment->delete();
+    
+        return response()->json(['message' => 'Enrollment deleted successfully']);
     }
 }
