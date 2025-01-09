@@ -9,13 +9,30 @@ class Enrollment extends Model
 {
     use HasFactory;
 
-    public function student(){
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'student_id',
+        'course_id',
+        'enrollment_date',
+    ];
+
+    /**
+     * Get the student for this enrollment.
+     */
+    public function student()
+    {
         return $this->belongsTo(Student::class);
     }
 
-    public function course(){
+    /**
+     * Get the course for this enrollment.
+     */
+    public function course()
+    {
         return $this->belongsTo(Course::class);
     }
-
-
 }
