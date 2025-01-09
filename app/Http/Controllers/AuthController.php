@@ -7,30 +7,47 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-
 class AuthController extends Controller
 {
+    // Register a new user
     public function register(Request $request)
-    {
-        $request->validate([
+{
+    $request->validate(
+        [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
-        ]);
+            'role' => 'required|string|in:admin,viewer',
+        ],
+        [
+            // Custom error messages
+            'name.required' => 'Name is required.',
+            'email.required' => 'Email is required.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.unique' => 'Email already exists.',
+            'password.required' => 'Password is required.',
+            'password.min' => 'Password must be at least 8 characters.',
+            'password.confirmed' => 'Password confirmation does not match.',
+            'role.required' => 'Role is required.',
+            'role.in' => 'Role must be either admin or viewer.',
+        ]
+    );
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    // If validation passes, proceed with user registration
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => $request->role,
+    ]);
 
-        return response()->json([
-            'user' => $user,
-            'message' => 'User registered successfully',
-        ], 201);
-    }
+    return response()->json([
+        'user' => $user,
+        'message' => 'User registered successfully',
+    ], 201);
+}
 
-
+    // Login an existing user
     public function login(Request $request)
     {
         $request->validate([
@@ -50,7 +67,12 @@ class AuthController extends Controller
             'message' => 'Logged in successfully',
             'access_token' => $token,
             'token_type' => 'Bearer',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role, // Include role in the response
+            ],
         ]);
     }
-
 }
