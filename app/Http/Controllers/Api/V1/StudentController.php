@@ -86,25 +86,50 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
-    {
-        $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:students,email,' . $student->id,
-            'age' => 'sometimes|required|integer',
-            'city' => 'sometimes|required|string|max:255',
-            'phone_number' => 'nullable|string|max:15',
-            'gender' => 'nullable|string|in:Male,Female,Other',
-        ]);
-
-        $student->update($request->all());
-
-        return response()->json([
-            'message' => 'Student updated successfully',
-            'student' => $student,
-        ]);
-    }
-
+    
+     public function update(Request $request, Student $student)
+     {
+         // Validate incoming request
+         $validatedData = $request->validate([
+             'name' => 'sometimes|required|string|max:255',
+             'email' => 'sometimes|required|email|unique:students,email,' . $student->id,
+             'age' => 'nullable|integer',
+             'city' => 'nullable|string|max:255',
+             'phone_number' => 'nullable|string|max:15',
+             'gender' => 'nullable|string|in:Male,Female,Other',
+         ]);
+     
+         try {
+             // Check if any valid data is provided
+             if (empty($validatedData)) {
+                 return response()->json([
+                     'message' => 'No valid fields provided for update.',
+                 ], 422);
+             }
+     
+             // Fill only the provided fields
+             $student->fill($validatedData);
+     
+             // Check for changes
+             if ($student->isDirty()) {
+                 $student->save(); // Save changes if there are any
+                 return response()->json([
+                     'message' => 'Student updated successfully',
+                     'student' => $student->fresh(), // Return the updated student
+                 ]);
+             } else {
+                 return response()->json([
+                     'message' => 'No changes detected for the student.',
+                 ]);
+             }
+         } catch (\Exception $e) {
+             return response()->json([
+                 'message' => 'Failed to update student. Please try again.',
+                 'error' => $e->getMessage(),
+             ], 500);
+         }
+     }
+     
 
 
     /**
